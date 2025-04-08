@@ -1,10 +1,12 @@
 {
   "name": "mcp-server-example",
+  "type": "module",
   "version": "1.0.0",
   "description": "Just an MCP server example to understand it better",
   "main": "index.js",
   "scripts": {
-    "start": "node --experimental-strip-types index.ts"
+    "start-server": "node --experimental-strip-types src/server.ts",
+    "start-client": "node --experimental-strip-types src/client.ts"
   },
   "repository": {
     "type": "git",
@@ -18,5 +20,9 @@
   "homepage": "https://github.com/mads-hartmann/mcp-server-example#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.9.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "express": "^5.1.0"
   }
 }
