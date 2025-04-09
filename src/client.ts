@@ -17,6 +17,9 @@ await client.connect(transport);
 
 // List resources
 const resources = await client.listResources();
-console.log(resources);
+console.log("Found resources:", resources.resources.length);
+
+const resource = await client.readResource({ uri: "greeting://Mads" });
+console.log(resource);
 
 client.close();
