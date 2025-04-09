@@ -1,0 +1,15 @@
+tasks:
+    install-dependencies:
+        name: Install dependencies
+        command: npm install
+        triggeredBy: [postDevcontainerStart]
+
+services:
+    remote-mcp-server:
+        name: Remote MCP Server
+        description: Runs the remote MCP server on :3001
+        commands:
+            start: npm run start-server
+            ready: nc -z localhost 3001
+        triggeredBy: [manual]
+
