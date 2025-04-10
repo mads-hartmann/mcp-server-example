@@ -15,9 +15,17 @@ const client = new Client({
 
 await client.connect(transport);
 
+const templates = await client.listResourceTemplates();
+console.log("Found templates:", templates.resourceTemplates.length);
+for (const template of templates.resourceTemplates) {
+  console.log("Found template:", template.name);
+}
+
 // List resources
 const resources = await client.listResources();
-console.log("Found resources:", resources.resources.length);
+for (const resource of resources.resources) {
+  console.log("Found resource:", resource.name);
+}
 
 const resource = await client.readResource({ uri: "greeting://Mads" });
 console.log(resource);

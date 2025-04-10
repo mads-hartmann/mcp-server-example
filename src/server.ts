@@ -12,6 +12,11 @@ type Greeting = {
   greeting: string;
 };
 
+type Issue = {
+  name: string;
+  description: string;
+};
+
 const greetings: Greeting[] = [
   {
     name: "Mads",
@@ -23,6 +28,19 @@ const greetings: Greeting[] = [
   },
 ];
 
+const issues: Issue[] = [
+  {
+    name: "NEXT-123",
+    description:
+      "We have an issue with our drop-downs where the icon that triggers the dropdown doesn't preverse it's hover status when you click it and it activates the dropdown",
+  },
+  {
+    name: "NEXT-456",
+    description:
+      "We have an issue with how we handle our context menus. When you e.g. right click an environment in the sidebar, then we don't maintain the hover state of the environment you clicked, which makes the whole thing feel off. ",
+  },
+];
+
 // Create an MCP server
 const server = new McpServer({
   name: "Demo",
@@ -31,6 +49,36 @@ const server = new McpServer({
 
 // Add a dynamic greeting resource
 server.resource(
+  "issue",
+  new ResourceTemplate("issue://{name}", {
+    list: (_extra) => {
+      return {
+        resources: issues.map((issue) => ({
+          name: issue.name,
+          uri: `issue://${issue.name}`,
+          description: `${issue.name}`,
+          mimeType: "text/plain",
+        })),
+      };
+    },
+  }),
+  async (uri, { name }) => {
+    const issue = issues.find((issue) => issue.name === name);
+    if (!issue) {
+      throw new Error(`Issue for ${name} not found`);
+    }
+    return {
+      contents: [
+        {
+          uri: uri.href,
+          text: issue.description,
+        },
+      ],
+    };
+  }
+);
+
+server.resource(
   "greeting",
   new ResourceTemplate("greeting://{name}", {
     list: (_extra) => {
@@ -38,7 +86,7 @@ server.resource(
         resources: greetings.map((greeting) => ({
           name: greeting.name,
           uri: `greeting://${greeting.name}`,
-          description: `A greeting resource for ${greeting.name}`,
+          description: `${greeting.name}`,
           mimeType: "text/plain",
         })),
       };
